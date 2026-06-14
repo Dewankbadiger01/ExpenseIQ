@@ -1,35 +1,38 @@
-import React, { useState } from 'react';
-
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
+const navigate = useNavigate();
   const onSubmit = (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    console.log('Email:', email);
-    console.log('Password:', password);
+  console.log("Email:", email);
+  console.log("Password:", password);
 
-    
+  
+  navigate("/");
 
-    setEmail('');
-    setPassword('');
-  };
+  setEmail("");
+  setPassword("");
+};
 
   return (
-    <div className="flex h-screen w-screen items-center justify-center">
-      <div className="border-2 border-emerald-600 rounded-xl p-20">
+   <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
+      <div className="bg-gray-200 border border-gray-200 rounded-2xl p-10 w-full max-w-sm shadow-sm">
         <form
           onSubmit={onSubmit}
           className="flex flex-col items-center gap-5"
         >
+          <h1 className="text-center text-xl font-medium text-gray-900 mb-1">Welcome back</h1>
+        <p className="text-center text-sm text-gray-500 mb-8">Sign in to your account</p>
           <input
             type="email"
             placeholder="Enter your Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            className="outline-none text-xl border-2 border-emerald-600 rounded-full py-3 px-5 placeholder:text-gray-500"
+            className="outline-none text-xl border-2 border-emerald-600 rounded-full py-3 px-4 placeholder:text-gray-500"
           />
 
           <input
@@ -38,7 +41,7 @@ const Login = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
-            className="outline-none text-xl border-2 border-emerald-600 rounded-full py-3 px-5 placeholder:text-gray-500"
+            className="outline-none text-xl border-2 border-emerald-600 rounded-full py-3 px-4 placeholder:text-gray-500"
           />
 
           <button

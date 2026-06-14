@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import Sidebar from "../Component/Layout/Sidebar";
 import SummaryCard from "../Component/Dashboard/SummaryCard";
 import RecentTransactions from "../Component/Dashboard/RecentTransactions";
 import ExpenseChart from "../Component/Dashboard/ExpenseChart";
@@ -12,18 +11,12 @@ const [expenses, setExpenses] = useState(() => {
   const handleAddExpense = (newExpense) => {
     setExpenses((prevExpenses) => [newExpense, ...prevExpenses]);
   };
-const totalIncome = expenses
-  .filter((expense) => expense.type === "income")
+const totalIncome = expenses.filter((expense) => expense.type === "income")
   .reduce((sum, expense) => sum + expense.amount, 0);
-
-const totalExpenses = expenses
-  .filter((expense) => expense.type === "expense")
+const totalExpenses = expenses.filter((expense) => expense.type === "expense")
   .reduce((sum, expense) => sum + expense.amount, 0);
-
 const totalBalance = totalIncome - totalExpenses;
-
 const totalSavings = totalBalance;
-
 const stats = [
   {
     title: "Total Balance",
@@ -52,7 +45,6 @@ useEffect(() => {
 }, [expenses]);
   return (
     <div className="flex min-h-screen bg-gray-100">
-      <Sidebar />
 
       <main className="flex-1 p-8">
         <h1 className="text-3xl font-bold">

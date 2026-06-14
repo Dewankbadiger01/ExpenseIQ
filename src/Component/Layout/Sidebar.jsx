@@ -25,7 +25,7 @@ const Sidebar = () => {
     <div key={item.name} className="mb-3">
       <NavLink
         to={item.path}
-        className="block px-4 py-3 rounded-lg hover:bg-zinc-700"
+        className="block px-4 py-3 rounded-lg hover:bg-zinc-500"
       >
         {item.name}
       </NavLink>
