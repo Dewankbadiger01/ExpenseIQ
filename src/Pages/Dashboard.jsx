@@ -11,10 +11,8 @@ const [expenses, setExpenses] = useState(() => {
   const handleAddExpense = (newExpense) => {
     setExpenses((prevExpenses) => [newExpense, ...prevExpenses]);
   };
-const totalIncome = expenses.filter((expense) => expense.type === "income")
-  .reduce((sum, expense) => sum + expense.amount, 0);
-const totalExpenses = expenses.filter((expense) => expense.type === "expense")
-  .reduce((sum, expense) => sum + expense.amount, 0);
+const totalIncome = expenses.filter((expense) => expense.type === "income").reduce((sum, expense) => sum + expense.amount, 0);
+const totalExpenses = expenses.filter((expense) => expense.type === "expense") .reduce((sum, expense) => sum + expense.amount, 0);
 const totalBalance = totalIncome - totalExpenses;
 const totalSavings = totalBalance;
 const stats = [
@@ -40,15 +38,24 @@ const handleDeleteExpense = (id) => {
     prevExpenses.filter((expense) => expense.id !== id)
   );
 };
+  const [editingExpense, setEditingExpense] = useState(null);
+
+const handleEditExpense=(updateExpense)=>{
+  setExpenses((prevExpenses)=>prevExpenses.map((expenses)=>expenses.id===updateExpense.id?updateExpense:expenses
+))
+setEditingExpense(null)
+}
 useEffect(() => {
   localStorage.setItem("expenses", JSON.stringify(expenses));
 }, [expenses]);
+const user = JSON.parse(localStorage.getItem("user"));
+
   return (
     <div className="flex min-h-screen bg-gray-100">
 
       <main className="flex-1 p-8">
         <h1 className="text-3xl font-bold">
-          Welcome back 👋
+          Welcome back {user?.name}
         </h1>
 
         <p className="mt-2 text-gray-500">
@@ -68,12 +75,17 @@ useEffect(() => {
 <RecentTransactions
   expenses={expenses}
   onDelete={handleDeleteExpense}
+  oneEdit={setEditingExpense}
 />       
 <div className="mt-8">
   <ExpenseChart />
 </div>
    <div className="mt-8">
-<ExpenseForm onAddExpense={handleAddExpense} /></div>
+<ExpenseForm
+  onAddExpense={handleAddExpense}
+  editingExpense={editingExpense}
+  onUpdateExpense={handleEditExpense}
+/></div>
       </main>
     </div>
   );

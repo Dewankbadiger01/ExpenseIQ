@@ -4,19 +4,26 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 const navigate = useNavigate();
-  const onSubmit = (e) => {
+const onSubmit = (e) => {
   e.preventDefault();
 
-  console.log("Email:", email);
-  console.log("Password:", password);
+  const savedUser = JSON.parse(localStorage.getItem("user"));
 
-  
-  navigate("/");
+  if (
+    savedUser &&
+    savedUser.email === email &&
+    savedUser.password === password
+  ) {
+    localStorage.setItem("isAuthenticated", "true");
+
+  navigate("/dashboard");
+  } else {
+    alert("Invalid email or password");
+  }
 
   setEmail("");
   setPassword("");
 };
-
   return (
    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
       <div className="bg-gray-200 border border-gray-200 rounded-2xl p-10 w-full max-w-sm shadow-sm">
@@ -50,6 +57,7 @@ const navigate = useNavigate();
           >
             Log In
           </button>
+          <p className="text-center text-sm"> Don't have an account?{" "} <button type="button" onClick={() => navigate("/register")} className="text-emerald-600 hover:underline" > Register </button> </p>
         </form>
       </div>
     </div>

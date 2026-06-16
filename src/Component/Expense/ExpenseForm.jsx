@@ -1,28 +1,53 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-const ExpenseForm = ({ onAddExpense }) => {
- const [title, setTitle] = useState("");
-const [amount, setAmount] = useState("");
-const [category, setCategory] = useState("Food");
-const [type, setType] = useState("expense");
+const ExpenseForm = ({
+  onAddExpense,
+  editingExpense,
+  onUpdateExpense,
+}) => {
+  const [title, setTitle] = useState("");
+  const [amount, setAmount] = useState("");
+  const [category, setCategory] = useState("Food");
+  const [type, setType] = useState("expense");
+
+  useEffect(() => {
+    if (editingExpense) {
+      setTitle(editingExpense.title);
+      setAmount(editingExpense.amount);
+      setCategory(editingExpense.category);
+      setType(editingExpense.type);
+    }
+  }, [editingExpense]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-const newExpense = {
-  id: Date.now(),
-  title,
-  amount: Number(amount),
-  category,
-  type,
-  date: new Date().toLocaleDateString(),
-};
+    if (editingExpense) {
+      onUpdateExpense({
+        ...editingExpense,
+        title,
+        amount: Number(amount),
+        category,
+        type,
+      });
+    } else {
+      const newExpense = {
+        id: Date.now(),
+        title,
+        amount: Number(amount),
+        category,
+        type,
+        date: new Date().toLocaleDateString(),
+      };
 
-    onAddExpense(newExpense);
- setTitle("");
-setAmount("");
-setCategory("Food");
-setType("expense");  };
+      onAddExpense(newExpense);
+    }
+
+    setTitle("");
+    setAmount("");
+    setCategory("Food");
+    setType("expense");
+  };
 
   return (
     <form
@@ -30,10 +55,11 @@ setType("expense");  };
       className="bg-white rounded-2xl shadow-md p-6 mt-8"
     >
       <h2 className="text-xl font-bold mb-4">
-        Add Expense
+        {editingExpense ? "Edit Transaction" : "Add Transaction"}
       </h2>
 
-<div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">        <input
+      <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <input
           type="text"
           placeholder="Expense Title"
           value={title}
@@ -62,21 +88,22 @@ setType("expense");  };
           <option>Bills</option>
           <option>Entertainment</option>
         </select>
+
         <select
-  value={type}
-  onChange={(e) => setType(e.target.value)}
-  className="border rounded-lg p-3 outline-none"
->
-  <option value="expense">Expense</option>
-  <option value="income">Income</option>
-</select>
+          value={type}
+          onChange={(e) => setType(e.target.value)}
+          className="border rounded-lg p-3 outline-none"
+        >
+          <option value="expense">Expense</option>
+          <option value="income">Income</option>
+        </select>
       </div>
 
       <button
         type="submit"
         className="mt-4 bg-emerald-600 text-white px-6 py-3 rounded-lg hover:bg-emerald-700"
       >
-        Add Expense
+        {editingExpense ? "Update Expense" : "Add Expense"}
       </button>
     </form>
   );
