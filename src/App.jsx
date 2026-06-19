@@ -10,7 +10,7 @@ import Budget from "./Pages/Budget";
 import Profile from "./Pages/Profile";
 
 import ProtectedRoute from "./routes/ProtectedRoute";
-import MainLayout from "./Component/Layout/MainLayout";
+import MainLayout from "./component/Layout/MainLayout";
 import Landing from "./Pages/Landing";
 function App() {
   return (
