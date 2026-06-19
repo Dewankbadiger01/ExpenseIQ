@@ -40,7 +40,7 @@ const RecentTransactions = ({ expenses, onDelete, oneEdit }) => {   return (
       <td className="py-4">
        <div className="flex gap-2">
   <button
-  onClick={() => oneEdit(expense)}
+  onClick={() => onEdit(expense)}
   className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600"
 >
   Edit

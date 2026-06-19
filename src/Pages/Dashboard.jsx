@@ -3,14 +3,12 @@ import SummaryCard from "../Component/Dashboard/SummaryCard";
 import RecentTransactions from "../Component/Dashboard/RecentTransactions";
 import ExpenseChart from "../Component/Dashboard/ExpenseChart";
 import ExpenseForm from "../Component/Expense/ExpenseForm";
+import axios from "axios";
 const Dashboard = () => {
-const [expenses, setExpenses] = useState(() => {
-  const savedExpenses = localStorage.getItem("expenses");
-  return savedExpenses ? JSON.parse(savedExpenses) : [];
-});
-  const handleAddExpense = (newExpense) => {
-    setExpenses((prevExpenses) => [newExpense, ...prevExpenses]);
-  };
+const [expenses, setExpenses] = useState([]);
+  const handleAddExpense = () => {
+  fetchExpenses();
+};
 const totalIncome = expenses.filter((expense) => expense.type === "income").reduce((sum, expense) => sum + expense.amount, 0);
 const totalExpenses = expenses.filter((expense) => expense.type === "expense") .reduce((sum, expense) => sum + expense.amount, 0);
 const totalBalance = totalIncome - totalExpenses;
@@ -33,23 +31,63 @@ const stats = [
     amount: totalSavings,
   },
 ];
-const handleDeleteExpense = (id) => {
-  setExpenses((prevExpenses) =>
-    prevExpenses.filter((expense) => expense.id !== id)
-  );
+const handleDeleteExpense = async (id) => {
+  try {
+    const token = localStorage.getItem("token");
+
+    await axios.delete(
+      `http://localhost:5000/api/expenses/${id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    fetchExpenses();
+  } catch (error) {
+    console.error(error);
+  }
 };
   const [editingExpense, setEditingExpense] = useState(null);
 
-const handleEditExpense=(updateExpense)=>{
-  setExpenses((prevExpenses)=>prevExpenses.map((expenses)=>expenses.id===updateExpense.id?updateExpense:expenses
-))
-setEditingExpense(null)
-}
+const handleEditExpense = () => {
+  fetchExpenses();
+  setEditingExpense(null);
+};
 useEffect(() => {
-  localStorage.setItem("expenses", JSON.stringify(expenses));
-}, [expenses]);
-const user = JSON.parse(localStorage.getItem("user"));
+  fetchExpenses();
+}, []);
 
+const fetchExpenses = async () => {
+  try {
+    const token = localStorage.getItem("token");
+
+    const response = await axios.get(
+      "http://localhost:5000/api/expenses",
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+setExpenses(response.data.data || []);  } catch (error) {
+    console.error(error);
+  }
+};
+const user = JSON.parse(localStorage.getItem("user"));
+const income = expenses
+  .filter((e) => e.type === "income")
+  .reduce((sum, e) => sum + Number(e.amount), 0);
+
+const expense = expenses
+  .filter((e) => e.type === "expense")
+  .reduce((sum, e) => sum + Number(e.amount), 0);
+  const pieData = [
+  { name: "Income", value: income },
+  { name: "Expenses", value: expense },
+];
   return (
     <div className="flex min-h-screen bg-gray-100">
 
@@ -75,10 +113,10 @@ const user = JSON.parse(localStorage.getItem("user"));
 <RecentTransactions
   expenses={expenses}
   onDelete={handleDeleteExpense}
-  oneEdit={setEditingExpense}
+  onEdit={setEditingExpense}
 />       
 <div className="mt-8">
-  <ExpenseChart />
+  <ExpenseChart data={pieData} />
 </div>
    <div className="mt-8">
 <ExpenseForm

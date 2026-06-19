@@ -1,24 +1,35 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 const navigate = useNavigate();
-const onSubmit = (e) => {
+const onSubmit = async (e) => {
   e.preventDefault();
 
-  const savedUser = JSON.parse(localStorage.getItem("user"));
+  try {
+    const response = await axios.post(
+      "http://localhost:5000/api/auth/login",
+      {
+        email,
+        password,
+      }
+    );
 
-  if (
-    savedUser &&
-    savedUser.email === email &&
-    savedUser.password === password
-  ) {
+    console.log("Login Response:", response.data);
+
+    localStorage.setItem("token", response.data.token);
+    localStorage.setItem("user", JSON.stringify(response.data.user));
     localStorage.setItem("isAuthenticated", "true");
 
-  navigate("/dashboard");
-  } else {
-    alert("Invalid email or password");
+    navigate("/dashboard");
+  } catch (error) {
+    console.error(error);
+
+    alert(
+      error.response?.data?.message || "Invalid email or password"
+    );
   }
 
   setEmail("");

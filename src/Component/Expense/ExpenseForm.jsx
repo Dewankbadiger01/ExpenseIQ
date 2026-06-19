@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import axios from "axios";
 
 const ExpenseForm = ({
   onAddExpense,
@@ -18,11 +19,29 @@ const ExpenseForm = ({
       setType(editingExpense.type);
     }
   }, [editingExpense]);
+const handleSubmit = async (e) => {
+  e.preventDefault();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const token = localStorage.getItem("token");
 
+  try {
     if (editingExpense) {
+      const response = await axios.put(
+        `http://localhost:5000/api/expenses/${editingExpense.id}`,
+        {
+          title,
+          amount: Number(amount),
+          category,
+          type,
+          expense_date: new Date().toISOString().split("T")[0],
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
       onUpdateExpense({
         ...editingExpense,
         title,
@@ -31,23 +50,43 @@ const ExpenseForm = ({
         type,
       });
     } else {
-      const newExpense = {
-        id: Date.now(),
+      const response = await axios.post(
+        "http://localhost:5000/api/expenses",
+        {
+          title,
+          amount: Number(amount),
+          category,
+          type,
+          expense_date: new Date().toISOString().split("T")[0],
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      console.log(response.data);
+
+      onAddExpense({
+        id: response.data.expenseId,
         title,
         amount: Number(amount),
         category,
         type,
-        date: new Date().toLocaleDateString(),
-      };
-
-      onAddExpense(newExpense);
+        expense_date: new Date().toISOString().split("T")[0],
+      });
     }
 
     setTitle("");
     setAmount("");
     setCategory("Food");
     setType("expense");
-  };
+  } catch (error) {
+    console.error(error);
+    alert(error.response?.data?.message || "Something went wrong");
+  }
+};
 
   return (
     <form
