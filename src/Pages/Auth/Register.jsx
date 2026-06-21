@@ -39,70 +39,71 @@ const Register = () => {
 };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
-      <div className="bg-gray-200 border border-gray-200 rounded-2xl p-10 w-full max-w-sm shadow-sm">
-        <form
-          onSubmit={handleSubmit}
-          className="flex flex-col gap-5"
+  <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-emerald-50 to-gray-100 px-4">
+    <div className="bg-white rounded-2xl p-8 w-full max-w-md shadow-xl hover:shadow-2xl transition duration-300">
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+
+        <h2 className="text-center text-emerald-600 text-3xl font-bold">
+          ExpenseIQ
+        </h2>
+
+        <h1 className="text-center text-2xl font-bold text-gray-800">
+          Create Account
+        </h1>
+
+        <p className="text-center text-gray-500 mb-4">
+          Register to start managing your expenses
+        </p>
+
+        <input
+          type="text"
+          placeholder="Full Name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          required
+          className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+        />
+
+        <input
+          type="email"
+          placeholder="Email Address"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+          className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+        />
+
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+          className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+        />
+
+        <button
+          type="submit"
+          className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3 rounded-lg transition duration-300"
         >
-          <div className="text-center">
-            <h1 className="text-xl font-medium text-gray-900">
-              Create Account
-            </h1>
+          Register
+        </button>
 
-            <p className="text-sm text-gray-500 mt-2">
-              Register to start managing your expenses
-            </p>
-          </div>
-
-          <input
-            type="text"
-            placeholder="Enter your Name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-            className="outline-none text-lg border-2 border-emerald-600 rounded-full py-3 px-4"
-          />
-
-          <input
-            type="email"
-            placeholder="Enter your Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            className="outline-none text-lg border-2 border-emerald-600 rounded-full py-3 px-4"
-          />
-
-          <input
-            type="password"
-            placeholder="Enter your Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            className="outline-none text-lg border-2 border-emerald-600 rounded-full py-3 px-4"
-          />
-
+        <p className="text-center text-gray-600">
+          Already have an account?{" "}
           <button
-            type="submit"
-            className="w-full bg-black text-white text-lg border-2 border-emerald-600 rounded-full py-3 hover:bg-gray-800 transition"
+            type="button"
+            onClick={() => navigate("/login")}
+            className="text-emerald-600 font-semibold hover:underline"
           >
-            Register
+            Login
           </button>
+        </p>
 
-          <p className="text-center text-sm text-gray-600">
-            Already have an account?{" "}
-            <button
-              type="button"
-              onClick={() => navigate("/login")}
-              className="text-emerald-600 font-medium hover:underline"
-            >
-              Login
-            </button>
-          </p>
-        </form>
-      </div>
+      </form>
     </div>
-  );
+  </div>
+);
 };
 
 export default Register;

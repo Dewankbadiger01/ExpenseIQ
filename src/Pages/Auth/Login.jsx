@@ -36,40 +36,51 @@ const onSubmit = async (e) => {
   setPassword("");
 };
   return (
-   <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
-      <div className="bg-gray-200 border border-gray-200 rounded-2xl p-10 w-full max-w-sm shadow-sm">
-        <form
+<div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-emerald-50 to-gray-100 px-4">     
+<div className="bg-white rounded-2xl p-8 w-full max-w-md shadow-xl">
+          <form
           onSubmit={onSubmit}
           className="flex flex-col items-center gap-5"
         >
+          <h2 className="text-center text-emerald-600 text-3xl font-bold mb-2">
+  ExpenseIQ
+</h2>
           <h1 className="text-center text-xl font-medium text-gray-900 mb-1">Welcome back</h1>
         <p className="text-center text-sm text-gray-500 mb-8">Sign in to your account</p>
-          <input
-            type="email"
-            placeholder="Enter your Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            className="outline-none text-xl border-2 border-emerald-600 rounded-full py-3 px-4 placeholder:text-gray-500"
-          />
+         <input
+  type="email"
+  placeholder="Email Address"
+  value={email}
+  onChange={(e) => setEmail(e.target.value)}
+  required
+  className="w-full border border-gray-300 rounded-lg px-4 py-3 mb-4 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+/>
 
-          <input
-            type="password"
-            placeholder="Enter your Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            className="outline-none text-xl border-2 border-emerald-600 rounded-full py-3 px-4 placeholder:text-gray-500"
-          />
+       <input
+  type="password"
+  placeholder="Password"
+  value={password}
+  onChange={(e) => setPassword(e.target.value)}
+  required
+  className="w-full border border-gray-300 rounded-lg px-4 py-3 mb-5 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+/>
 
-          <button
-            type="submit"
-            className="w-full bg-black text-white text-xl border-2 border-emerald-600 rounded-full py-3 px-5 hover:bg-gray-800 transition"
-          >
-            Log In
-          </button>
-          <p className="text-center text-sm"> Don't have an account?{" "} <button type="button" onClick={() => navigate("/register")} className="text-emerald-600 hover:underline" > Register </button> </p>
-        </form>
+         <button
+  type="submit"
+  className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3 rounded-lg transition duration-300"
+>
+  Log In
+</button>
+<p className="text-center mt-5 text-gray-600">
+  Don't have an account?{" "}
+  <button
+    type="button"
+    onClick={() => navigate("/register")}
+    className="text-emerald-600 font-semibold hover:underline"
+  >
+    Register
+  </button>
+</p>        </form>
       </div>
     </div>
   );
